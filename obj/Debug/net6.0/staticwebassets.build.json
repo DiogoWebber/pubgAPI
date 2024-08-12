@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "EyJdlAWvS15YCvYzT8CWwX9AaDNOBuRLX5StUxPEH6g=",
+  "Source": "PubgAPI",
+  "BasePath": "_content/PubgAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
