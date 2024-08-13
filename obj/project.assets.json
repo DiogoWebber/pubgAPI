@@ -5212,19 +5212,19 @@
     ]
   },
   "packageFolders": {
-    "/home/diogo/.nuget/packages/": {}
+    "C:\\Users\\Diogo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/diogo/PubgAPI/PubgAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Diogo\\RiderProjects\\pubgAPI\\PubgAPI.csproj",
       "projectName": "PubgAPI",
-      "projectPath": "/home/diogo/PubgAPI/PubgAPI.csproj",
-      "packagesPath": "/home/diogo/.nuget/packages/",
-      "outputPath": "/home/diogo/PubgAPI/obj/",
+      "projectPath": "C:\\Users\\Diogo\\RiderProjects\\pubgAPI\\PubgAPI.csproj",
+      "packagesPath": "C:\\Users\\Diogo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Diogo\\RiderProjects\\pubgAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/diogo/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Diogo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -5267,7 +5267,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -5279,7 +5280,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/6.0.132/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.424\\RuntimeIdentifierGraph.json"
       }
     }
   }

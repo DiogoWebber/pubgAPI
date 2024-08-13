@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 using PubgAPI.Dtos;
 using PubgAPI.Interfaces;
+using PubgAPI.Errors;
+using PubgAPI.Serialization;
 
 namespace PubgAPI.Rest
 {
@@ -19,7 +17,7 @@ namespace PubgAPI.Rest
             _httpClient = httpClient;
             _apiKey = configuration["PUBG_API_KEY"];
         }
-
+        //PLAYER POR NICKNAME
         public async Task<ResponseGenerico<PlayerResponse>> BuscarPlayerNames(List<string> playerNames)
         {
             var namesQuery = string.Join(",", playerNames.Select(name => Uri.EscapeDataString(name)));
@@ -40,23 +38,21 @@ namespace PubgAPI.Rest
                 {
                     try
                     {
-                        var objResponse = JsonSerializer.Deserialize<PlayerResponse>(contentResp,
-                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        var objResponse = JsonSerializerHelper.Deserialize<PlayerResponse>(contentResp);
                         response.CodigoHttp = responseApi.StatusCode;
                         response.DadosRetorno = objResponse;
                     }
-                    catch (JsonException jsonEx)
+                    catch (JsonException)
                     {
-                        Console.WriteLine("JSON Deserialization error: " + jsonEx.Message);
                         dynamic erroRetorno = new ExpandoObject();
-                        erroRetorno.message = "Erro ao desserializar a resposta.";
+                        erroRetorno.message = ErrorMessages.JsonDeserializationError;
                         response.ErroRetorno = erroRetorno;
                     }
                 }
                 else
                 {
                     dynamic erroRetorno = new ExpandoObject();
-                    erroRetorno.message = "Erro na API: " + contentResp;
+                    erroRetorno.message = string.Format(ErrorMessages.ApiError, contentResp);
                     response.CodigoHttp = responseApi.StatusCode;
                     response.ErroRetorno = erroRetorno;
                 }
@@ -66,7 +62,65 @@ namespace PubgAPI.Rest
                 Console.WriteLine("HTTP Request error: " + httpEx.Message);
                 response.CodigoHttp = System.Net.HttpStatusCode.ServiceUnavailable;
                 dynamic erroRetorno = new ExpandoObject();
-                erroRetorno.message = "Erro na solicitação HTTP.";
+                erroRetorno.message = ErrorMessages.HttpRequestError;
+                response.ErroRetorno = erroRetorno;
+            }
+
+            return response;
+        }
+        
+        
+        //PLAYER POR ID 
+        public async Task<ResponseGenerico<PlayerResponse>> BuscarPlayersByIds(List<string> playerIds)
+        {
+            var idsQuery = string.Join(",", playerIds.Select(id => Uri.EscapeDataString(id)));
+            var requestUri = $"https://api.pubg.com/shards/steam/players?filter[playerIds]={idsQuery}";
+
+            return await SendRequest(requestUri);
+        }
+
+        private async Task<ResponseGenerico<PlayerResponse>> SendRequest(string requestUri)
+        {
+            var response = new ResponseGenerico<PlayerResponse>();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.api+json"));
+
+            try
+            {
+                var responseApi = await _httpClient.SendAsync(request);
+                var contentResp = await responseApi.Content.ReadAsStringAsync();
+
+                if (responseApi.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        var objResponse = JsonSerializerHelper.Deserialize<PlayerResponse>(contentResp);
+                        response.CodigoHttp = responseApi.StatusCode;
+                        response.DadosRetorno = objResponse;
+                    }
+                    catch (JsonException)
+                    {
+                        dynamic erroRetorno = new ExpandoObject();
+                        erroRetorno.message = ErrorMessages.JsonDeserializationError;
+                        response.ErroRetorno = erroRetorno;
+                    }
+                }
+                else
+                {
+                    dynamic erroRetorno = new ExpandoObject();
+                    erroRetorno.message = string.Format(ErrorMessages.ApiError, contentResp);
+                    response.CodigoHttp = responseApi.StatusCode;
+                    response.ErroRetorno = erroRetorno;
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.WriteLine("HTTP Request error: " + httpEx.Message);
+                response.CodigoHttp = System.Net.HttpStatusCode.ServiceUnavailable;
+                dynamic erroRetorno = new ExpandoObject();
+                erroRetorno.message = ErrorMessages.HttpRequestError;
                 response.ErroRetorno = erroRetorno;
             }
 

@@ -16,8 +16,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Adicionar a configuração do HttpClient com a chave da API do .env
 builder.Services.AddHttpClient<IPlayerService, PlayerRest>();
+builder.Services.AddHttpClient<IMatchService, MatchRest>(); 
+
 builder.Services.AddHttpClient<PlayerRest>();
 
 var app = builder.Build();

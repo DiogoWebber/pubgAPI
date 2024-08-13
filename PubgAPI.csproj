@@ -13,12 +13,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
+    <Compile Remove="WeatherForecast.cs" />
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Error\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="WeatherForecast.cs" />
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <EmbeddedResource Remove="Error\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Error\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Error\**" />
   </ItemGroup>
 
 </Project>
