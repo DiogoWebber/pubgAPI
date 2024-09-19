@@ -12,8 +12,8 @@ using ProjetoIdentity.Data;
 namespace PubgAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240914214352_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240919024123_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
