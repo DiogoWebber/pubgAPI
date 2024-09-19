@@ -75,9 +75,8 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
-
-builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 
 // Serviços HTTP para a API PUBG
@@ -97,6 +96,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication(); // Adicionando autenticação
 app.UseAuthorization();
-
+    
 app.MapControllers();
 app.Run();

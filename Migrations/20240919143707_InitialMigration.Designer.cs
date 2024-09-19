@@ -12,8 +12,8 @@ using ProjetoIdentity.Data;
 namespace PubgAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240919024123_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240919143707_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,29 @@ namespace PubgAPI.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "f55c6feb-424a-4a45-8ef8-edd28fd33f26",
+                            ConcurrencyStamp = "5b1a8720-2b71-403d-91b8-76a1a91750b2",
+                            Name = "Administrador",
+                            NormalizedName = "ADMINISTRADOR"
+                        },
+                        new
+                        {
+                            Id = "c0629e62-ff3c-48c0-97fb-bea68d02d737",
+                            ConcurrencyStamp = "a1b8e3b5-24f1-47b7-b14f-176012e144a2",
+                            Name = "Usuário Gestor",
+                            NormalizedName = "USUÁRIO GESTOR"
+                        },
+                        new
+                        {
+                            Id = "784c1de8-c751-473a-b9e3-98f88cf257b7",
+                            ConcurrencyStamp = "9c9ab838-258f-4087-98a3-12edb994bb08",
+                            Name = "Usuário",
+                            NormalizedName = "USUÁRIO"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -137,6 +160,24 @@ namespace PubgAPI.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "96bbee54-4e4c-40da-a27b-2f04768800e5",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bbccdaf6-42e2-4d06-96d6-fb612267cb4c",
+                            Email = "admin@mail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@MAIL.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPKhLkKwBJfPx/yLoday6ZoxDZ2qV6xVOuNdFSpYn2YED7Xyht9L/JioUxDZ8qxotg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c83d650c-f58a-4ebc-ab66-d585abb37d02",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -199,6 +240,13 @@ namespace PubgAPI.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "96bbee54-4e4c-40da-a27b-2f04768800e5",
+                            RoleId = "f55c6feb-424a-4a45-8ef8-edd28fd33f26"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
