@@ -28,31 +28,54 @@ namespace IdentityApiWithNpgsql.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password, string role)
+        public async Task<IActionResult> Register(string username, string password)
         {
             var user = new IdentityUser { UserName = username };
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
-                if (!string.IsNullOrEmpty(role))
-                {
-                    var roleExist = await _roleManager.RoleExistsAsync(role);
-                    if (roleExist)
-                    {
-                        await _userManager.AddToRoleAsync(user, role);
-                    }
-                    else
-                    {
-                        return BadRequest("Role does not exist.");
-                    }
-                }
-
-                return Ok("User registered successfully");
+                // Atribui automaticamente a role 'Usuario'
+                await _userManager.AddToRoleAsync(user, "Usuário");
+                return Ok("Usuário registrado com sucesso com a role de 'Usuario'.");
             }
 
             return BadRequest(result.Errors);
         }
+
+        
+        
+        [HttpPost("update-role")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> UpdateUserRole(string username, string newRole)
+        {
+            // Verifica se o usuário autenticado é um Admin
+            var currentUser = await _userManager.GetUserAsync(User);
+            
+            // Verifica se o novo role existe
+            var roleExist = await _roleManager.RoleExistsAsync(newRole);
+            if (!roleExist)
+            {
+                return BadRequest("A role especificada não existe.");
+            }
+
+            // Busca o usuário pelo username
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+
+            // Remove todas as roles do usuário
+            var userRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, userRoles);
+
+            // Atribui a nova role
+            await _userManager.AddToRoleAsync(user, newRole);
+
+            return Ok($"Role do usuário '{username}' foi atualizada para '{newRole}'.");
+        }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(string username, string password)

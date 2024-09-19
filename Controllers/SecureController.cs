@@ -16,7 +16,7 @@ public class SecureController : ControllerBase
     }
     
     [HttpGet("admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador")]
     public IActionResult GetMessageAdmin()
     {
         return Ok("Você é administrador do sistema!");
