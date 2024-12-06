@@ -1,30 +1,19 @@
 using System.Text;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProjetoIdentity.Data;
 using PubgAPI.Interfaces;
 using PubgAPI.Rest;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Carregar variáveis do arquivo .env
-Env.Load();
+Env.Load("settings.env");
 
 // Configurar o acesso às variáveis de ambiente
 builder.Configuration.AddEnvironmentVariables();
 
-// Adicionar o DbContext com o banco PostgreSQL
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Configurar o Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
 
 // Configuração do Swagger
 builder.Services.AddSwaggerGen(c =>
@@ -51,7 +40,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
@@ -96,6 +85,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication(); // Adicionando autenticação
 app.UseAuthorization();
-    
+
 app.MapControllers();
 app.Run();

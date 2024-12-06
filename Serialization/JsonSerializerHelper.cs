@@ -1,5 +1,5 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
+
 namespace PubgAPI.Serialization;
 
 public class JsonSerializerHelper
@@ -8,7 +8,8 @@ public class JsonSerializerHelper
     {
         try
         {
-            return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<T>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
         catch (JsonException ex)
         {
